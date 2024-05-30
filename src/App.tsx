@@ -8,6 +8,7 @@ import IntersectionArea from './components/common/IntersectionArea';
 import useProducts, { SortType } from './components/hooks/useProducts';
 import ProductItem from './components/product/ProductItem';
 import ProductList from './components/product/ProductList';
+
 import { CartItemsProvider } from './context/CartItemsProvider';
 
 import { CATEGORY, SORT } from './constants/filterOptions';
@@ -26,8 +27,7 @@ const FilterContainer = styled.div`
 `;
 
 function App() {
-  const { products, setCategory, setSort, fetchNextPage, error, loading } =
-    useProducts();
+  const { products, setCategory, setSort, fetchNextPage, error, loading } = useProducts();
 
   const onCategorySelect = (value: string) => {
     setCategory(value);
@@ -43,13 +43,13 @@ function App() {
           <Title content={PAGE_INFORMATION.main.title} />
           <FilterContainer>
             <Dropdown
-              size="small"
+              size='small'
               defaultContent={CATEGORY.defaultContent}
               options={CATEGORY.options}
               onSelect={onCategorySelect}
             />
             <Dropdown
-              size="small"
+              size='small'
               defaultContent={SORT.defaultContent}
               options={SORT.options}
               onSelect={onSortSelect}
@@ -61,10 +61,7 @@ function App() {
               return idx + 1 !== products.length ? (
                 <ProductItem product={product} key={`${product.id}_${idx}`} />
               ) : (
-                <IntersectionArea
-                  onImpression={fetchNextPage}
-                  key={`${product.id}_${idx}`}
-                >
+                <IntersectionArea onImpression={fetchNextPage} key={`${product.id}_${idx}`}>
                   <ProductItem product={product} />
                 </IntersectionArea>
               );
