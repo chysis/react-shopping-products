@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { LowerArrow, UpperArrow } from '../Arrows';
+import { LowerArrow, UpperArrow } from './Arrows';
 import * as S from './style';
 
 type Option = {
@@ -14,12 +14,7 @@ interface DropdownProps {
   onSelect: (value: string) => void;
 }
 
-const Dropdown = ({
-  size,
-  options,
-  defaultContent,
-  onSelect,
-}: DropdownProps) => {
+const Dropdown = ({ size, options, defaultContent, onSelect }: DropdownProps) => {
   const [curContent, setCurContent] = useState<string>(defaultContent);
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -35,10 +30,7 @@ const Dropdown = ({
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsOpened(false);
     }
   };
@@ -53,20 +45,14 @@ const Dropdown = ({
   return (
     <S.Container ref={dropdownRef}>
       <S.Dropdown size={size} onClick={handleDropdownClick}>
-        <S.DropdownText selectedOption={curContent}>
-          {curContent}
-        </S.DropdownText>
+        <S.DropdownText selectedOption={curContent}>{curContent}</S.DropdownText>
         {isOpened ? <UpperArrow /> : <LowerArrow />}
       </S.Dropdown>
       {isOpened && (
         <S.OptionContainer size={size}>
           {options.map((option, index) => {
             return (
-              <S.Option
-                key={`${option.content}_${index}`}
-                id={option.value}
-                onClick={() => handleOptionSelect(option)}
-              >
+              <S.Option key={`${option.content}_${index}`} id={option.value} onClick={() => handleOptionSelect(option)}>
                 {option.content}
               </S.Option>
             );

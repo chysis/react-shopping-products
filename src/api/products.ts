@@ -1,4 +1,4 @@
-import { SortType } from '../components/hooks/useProducts';
+import { SortType } from '@_hooks/useProducts';
 import { generateQueryParams } from '../utils/generateQueryParams';
 import { HEADERS } from './common';
 import { PRODUCTS_ENDPOINT } from './endpoints';
@@ -10,19 +10,13 @@ interface ProductQueryParams {
   category?: string;
 }
 
-export async function fetchProducts({
-  page,
-  size,
-  sort,
-  category,
-}: ProductQueryParams) {
-  const params = generateQueryParams({
-    page,
-    size,
-    sort: `price,${sort}`,
-    category,
+export async function fetchProducts(params: ProductQueryParams) {
+  const queryParams = generateQueryParams({
+    ...params,
+    sort: `price,${params.sort}`,
   });
-  const response = await fetch(`${PRODUCTS_ENDPOINT}?${params}`, {
+
+  const response = await fetch(`${PRODUCTS_ENDPOINT}?${queryParams}`, {
     method: 'GET',
     headers: HEADERS,
   });

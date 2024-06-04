@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
-export type Size = 'small' | 'large';
+export type Size = 'default' | 'full';
 const DROPDOWN_SIZE = {
-  small: '125px',
-  large: '100%',
+  default: '125px',
+  full: '100%',
 };
 
 export const Container = styled.div`
@@ -33,11 +33,10 @@ export const Dropdown = styled.button<{ size: Size }>`
 `;
 
 export const DropdownText = styled.span<{ selectedOption: string }>`
-  color: ${({ selectedOption, theme }) =>
-    selectedOption === '' ? theme.colors.semiBlack : theme.colors.black};
+  color: ${({ selectedOption, theme }) => (selectedOption === '' ? theme.colors.semiBlack : theme.colors.black)};
 
-  font-size: 14px;
-  font-weight: 500;
+  font-size: ${({ theme }) => theme.fontSize.normal};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   line-height: 20px;
 `;
 
@@ -66,7 +65,7 @@ export const Option = styled.li`
   display: flex;
   align-items: center;
 
-  font-size: 11px;
+  font-size: ${({ theme }) => theme.fontSize.description};
   width: 100%;
   height: 31px;
 
@@ -76,6 +75,6 @@ export const Option = styled.li`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.optionBg};
-    font-weight: 700;
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
   }
 `;

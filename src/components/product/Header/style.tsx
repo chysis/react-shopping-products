@@ -41,6 +41,6 @@ export const CartItemQuantity = styled.div`
   border-radius: 50%;
 
   background-color: ${({ theme }) => theme.colors.white};
-  font-size: 10px;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSize.cartIcon};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;

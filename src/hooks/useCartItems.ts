@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
-import { CART_ITEMS_ENDPOINT } from '../../api/endpoints';
 import useFetch from './useFetch';
-import { CartItem } from '../../types';
+import { CartItem } from '@_types/cartItem';
+import { CART_ITEMS_ENDPOINT } from '@_api/endpoints';
 
 interface UseCartItemsResult {
   cartItems: CartItem[];

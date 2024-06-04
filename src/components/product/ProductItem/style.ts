@@ -24,19 +24,19 @@ export const Information = styled.div`
 `;
 
 export const Name = styled.p`
-  font-size: 14px;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSize.normal};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   line-height: 20px;
 `;
 
 export const Description = styled.p`
-  font-size: 12px;
-  font-weight: 500;
+  font-size: ${({ theme }) => theme.fontSize.description};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   line-height: 15px;
 `;
 
 export const Price = styled.p`
-  font-size: 12px;
-  font-weight: 500;
+  font-size: ${({ theme }) => theme.fontSize.description};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   line-height: 15px;
 `;

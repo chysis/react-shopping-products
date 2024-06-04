@@ -1,12 +1,12 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { HttpResponse, http } from 'msw';
 import useProducts, { SortType } from './useProducts';
-import server from '../../mocks/server';
-import { PRODUCTS_ENDPOINT } from '../../api/endpoints';
+import server from '@_mocks/server';
+import { PRODUCTS_ENDPOINT } from '@_api/endpoints';
 
 describe('useProducts', () => {
   describe('상품 목록 조회', () => {
-    it('상품 목록을 조회한다.', async () => {
+    it('hook이 선언되면 상품 목록을 조회한다.', async () => {
       const { result } = renderHook(() => useProducts());
 
       await waitFor(() => {
@@ -16,13 +16,13 @@ describe('useProducts', () => {
       });
     });
 
-    it('상품 목록 조회 중 로딩 상태', () => {
+    it('상품 목록 조회 중 로딩 상태는 true가 된다.', () => {
       const { result } = renderHook(() => useProducts());
 
       expect(result.current.loading).toBe(true);
     });
 
-    it('상품 목록 조회 중 에러 상태', async () => {
+    it('상품 목록 조회 중 에러가 발생하면 로딩 상태는 false, 에러 상태는 true가 된다.', async () => {
       server.use(
         http.get(PRODUCTS_ENDPOINT, () => {
           return new HttpResponse(null, { status: 500 });
@@ -40,7 +40,7 @@ describe('useProducts', () => {
   });
 
   describe('페이지네이션', () => {
-    it('초기에 첫 페이지의 상품 20개를 불러온다', async () => {
+    it('hook이 선언되면 첫 페이지의 상품 20개를 불러온다', async () => {
       const { result } = renderHook(() => useProducts());
 
       await waitFor(() => {
@@ -49,7 +49,7 @@ describe('useProducts', () => {
       });
     });
 
-    it('다음 페이지의 상품 4개를 추가로 불러온다', async () => {
+    it('fetchNextPage를 호출하면 다음 페이지의 상품 4개를 추가로 불러온다', async () => {
       const { result } = renderHook(() => useProducts());
 
       await waitFor(() => {
@@ -118,7 +118,7 @@ describe('useProducts', () => {
     });
   });
 
-  describe('가격을 기준으로 정렬', () => {
+  describe('가격 기준으로 정렬', () => {
     const sortOptions = [
       { option: 'asc', description: "'낮은 가격 순'으로 정렬되어야 한다." },
       {
@@ -138,9 +138,7 @@ describe('useProducts', () => {
         expect(result.current.products).toBeDefined();
 
         const prices = result.current.products.map((product) => product.price);
-        const sortedPrices = [...prices].sort((a, b) =>
-          option === 'asc' ? a - b : b - a
-        );
+        const sortedPrices = [...prices].sort((a, b) => (option === 'asc' ? a - b : b - a));
 
         expect(prices).toEqual(sortedPrices);
       });
@@ -149,7 +147,7 @@ describe('useProducts', () => {
 
   describe('카테고리 기준으로 필터링', () => {
     const categories = [
-      { category: '', expected: 20, description: '모든 아이템을 반환한다.' },
+      { category: '', expected: 20, description: "카테고리가 '전체'면 모든 아이템을 반환한다." },
       {
         category: 'fashion',
         expected: 20,
@@ -192,11 +190,7 @@ describe('useProducts', () => {
         expect(result.current.products).toBeDefined();
 
         if (category !== '') {
-          expect(
-            result.current.products.every(
-              (product) => product.category === category
-            )
-          ).toBeTruthy();
+          expect(result.current.products.every((product) => product.category === category)).toBeTruthy();
         }
 
         expect(result.current.products).toHaveLength(expected);

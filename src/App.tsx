@@ -1,18 +1,17 @@
-import Dropdown from './components/common/Dropdown';
-import Title from './components/common/Title';
-import Layout from './components/layout';
-import Header from './components/product/Header';
-
 import styled from '@emotion/styled';
-import IntersectionArea from './components/common/IntersectionArea';
-import useProducts, { SortType } from './components/hooks/useProducts';
-import ProductItem from './components/product/ProductItem';
-import ProductList from './components/product/ProductList';
 
-import { CartItemsProvider } from './context/CartItemsProvider';
+import { CATEGORY, SORT } from '@_constants/filterOptions';
+import { PAGE_INFORMATION } from '@_constants/page';
 
-import { CATEGORY, SORT } from './constants/filterOptions';
-import { PAGE_INFORMATION } from './constants/page';
+import { CartItemsProvider } from '@_context/CartItemsProvider';
+import useProducts, { SortType } from '@_hooks/useProducts';
+import Layout from '@_components/layout';
+import Header from '@_components/product/Header';
+import Title from '@_components/common/Title';
+import Dropdown from '@_components/common/Dropdown';
+import ProductList from '@_components/product/ProductList';
+import IntersectionArea from '@_components/common/IntersectionArea';
+import ProductItem from '@_components/product/ProductItem';
 
 const Wrapper = styled.div`
   display: flex;
@@ -43,13 +42,13 @@ function App() {
           <Title content={PAGE_INFORMATION.main.title} />
           <FilterContainer>
             <Dropdown
-              size='small'
+              size='default'
               defaultContent={CATEGORY.defaultContent}
               options={CATEGORY.options}
               onSelect={onCategorySelect}
             />
             <Dropdown
-              size='small'
+              size='default'
               defaultContent={SORT.defaultContent}
               options={SORT.options}
               onSelect={onSortSelect}
@@ -58,12 +57,13 @@ function App() {
 
           <ProductList loading={loading} error={error}>
             {products.map((product, idx) => {
-              return idx + 1 !== products.length ? (
-                <ProductItem product={product} key={`${product.id}_${idx}`} />
-              ) : (
+              const isLastProduct = idx + 1 === products.length;
+              return isLastProduct ? (
                 <IntersectionArea onImpression={fetchNextPage} key={`${product.id}_${idx}`}>
                   <ProductItem product={product} />
                 </IntersectionArea>
+              ) : (
+                <ProductItem product={product} key={`${product.id}_${idx}`} />
               );
             })}
           </ProductList>

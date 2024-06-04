@@ -1,6 +1,6 @@
 import { SetStateAction, createContext, useEffect, useState } from 'react';
-import useCartItems from '../components/hooks/useCartItems';
 import { CartItem } from '../types';
+import useCartItems from '@_hooks/useCartItems';
 
 interface CartItemsContextValue {
   cartItems: CartItem[];
@@ -12,11 +12,7 @@ export const CartItemsContext = createContext<CartItemsContextValue>({
   setRefresh: () => {},
 });
 
-export const CartItemsProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const CartItemsProvider = ({ children }: { children: React.ReactNode }) => {
   const { cartItems, getCartItems } = useCartItems();
   const [refresh, setRefresh] = useState<boolean>(true);
 
@@ -27,9 +23,5 @@ export const CartItemsProvider = ({
     }
   }, [refresh]);
 
-  return (
-    <CartItemsContext.Provider value={{ cartItems, setRefresh }}>
-      {children}
-    </CartItemsContext.Provider>
-  );
+  return <CartItemsContext.Provider value={{ cartItems, setRefresh }}>{children}</CartItemsContext.Provider>;
 };

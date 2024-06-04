@@ -7,15 +7,13 @@ export const Button = styled.button<{ isPushed: boolean }>`
 
   height: 24px;
 
-  background-color: ${({ isPushed, theme }) =>
-    isPushed ? theme.colors.btnActiveBgColor : theme.colors.btnBgColor};
-  color: ${({ isPushed, theme }) =>
-    isPushed ? theme.colors.black : theme.colors.white};
+  background-color: ${({ isPushed, theme }) => (isPushed ? theme.colors.btnActiveBgColor : theme.colors.btnBgColor)};
+  color: ${({ isPushed, theme }) => (isPushed ? theme.colors.black : theme.colors.white)};
   padding: 4px 8px;
   border-radius: 4px;
 
-  font-size: 12px;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.description};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   line-height: 15px;
 
   display: flex;

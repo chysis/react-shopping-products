@@ -1,7 +1,7 @@
+import { HEADERS } from '@_api/common';
+import { CommonQueryParams } from '@_types/fetch';
+import { generateQueryParams } from '@_utils/generateQueryParams';
 import { useState } from 'react';
-import { HEADERS } from '../../api/common';
-import { CommonQueryParams } from '../../types/fetch';
-import { generateQueryParams } from '../../utils/generateQueryParams';
 
 interface UseFetchResult<T> {
   loading: boolean;
