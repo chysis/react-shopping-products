@@ -1,8 +1,9 @@
-import { useContext, useState } from 'react';
-import { AddCartIcon, RemoveCartIcon } from './Icons';
+import { useContext } from 'react';
+import { AddCartIcon } from './Icons';
 import * as S from './style';
 import { CartItemsContext } from '@_context/CartItemsProvider';
-import { addCartItem, removeCartItem } from '@_api/cart';
+import QuantityButton from '@_components/common/Buttons/QuantityButton';
+import { useMutateCartItems } from '@_hooks/useMutateCartItems';
 
 interface CartButtonProps {
   productId: number;
@@ -10,54 +11,41 @@ interface CartButtonProps {
 
 export default function CartButton({ productId }: CartButtonProps) {
   const { cartItems } = useContext(CartItemsContext) || { cartItems: [] };
-  const [isPushed, setPushed] = useState(() => cartItems.some((cartItem) => cartItem.product.id === productId));
+  const { addItemToCart, removeItemFromCart, updateCartItemQuantity } = useMutateCartItems();
 
-  return isPushed ? (
-    <RemoveCartButton setPushed={setPushed} productId={productId} />
-  ) : (
-    <AddCartButton setPushed={setPushed} productId={productId} />
-  );
-}
+  const targetCartItem = cartItems.find((cartItem) => cartItem.product.id === productId);
+  const isPushed = !!targetCartItem;
 
-interface CartToggleButtonProps extends CartButtonProps {
-  setPushed: React.Dispatch<React.SetStateAction<boolean>>;
-}
+  const handleAddItem = () => {
+    addItemToCart({ productId });
+  };
 
-export function RemoveCartButton({ setPushed, productId }: CartToggleButtonProps) {
-  const { cartItems, setRefresh } = useContext(CartItemsContext) || { cartItems: [], setRefresh: () => {} };
-  const cartItemId = cartItems.find((cartItem) => cartItem.product.id === productId)?.id;
-
-  const handleClick = () => {
-    if (cartItemId) {
-      removeCartItem({ cartItemId }).then(() => {
-        setRefresh(true);
-        setPushed(false);
-      });
+  const handleDecreaseQuantity = () => {
+    if (!targetCartItem) return;
+    if (targetCartItem.quantity === 1) {
+      if (confirm('해당 상품을 장바구니에서 빼시겠습니까?')) {
+        removeItemFromCart({ cartItemId: targetCartItem.id });
+      }
+    } else {
+      updateCartItemQuantity({ cartItemId: targetCartItem.id, quantity: targetCartItem.quantity - 1 });
     }
   };
 
-  return (
-    <S.Button isPushed onClick={handleClick}>
-      <RemoveCartIcon />
-      <p>빼기</p>
-    </S.Button>
-  );
-}
-
-export function AddCartButton({ setPushed, productId }: CartToggleButtonProps) {
-  const { setRefresh } = useContext(CartItemsContext) || { setRefresh: () => {} };
-
-  const handleClick = () => {
-    addCartItem({ productId }).then(() => {
-      setPushed(true);
-      setRefresh(true);
-    });
+  const handleIncreaseQuantity = () => {
+    if (!targetCartItem) return;
+    updateCartItemQuantity({ cartItemId: targetCartItem.id, quantity: targetCartItem.quantity + 1 });
   };
 
-  return (
-    <S.Button isPushed={false} onClick={handleClick}>
+  return isPushed ? (
+    <S.QuantityController>
+      <QuantityButton type={targetCartItem.quantity === 1 ? 'canDelete' : 'minus'} onClick={handleDecreaseQuantity} />
+      <div>{targetCartItem.quantity}</div>
+      <QuantityButton type='plus' onClick={handleIncreaseQuantity} />
+    </S.QuantityController>
+  ) : (
+    <S.AddButton onClick={handleAddItem}>
       <AddCartIcon />
-      <p>담기</p>
-    </S.Button>
+      담기
+    </S.AddButton>
   );
 }

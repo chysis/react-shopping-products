@@ -41,6 +41,11 @@ const fontSize: FontSize = {
   normal: '14px',
 
   cartIcon: '10px',
+  cartTitle: '18px',
+  cartItemName: '16px',
+
+  paymentDetailTitle: '16px',
+  paymentDetailAmount: '24px',
 };
 
 const fontWeight: FontWeight = {

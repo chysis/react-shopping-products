@@ -18,7 +18,11 @@ export const fetchCartItems = async (): Promise<CartItem[]> => {
   return data.content;
 };
 
+<<<<<<< HEAD
 interface AddCartItemArgs {
+=======
+export interface AddCartItemArgs {
+>>>>>>> 9560a8eead974ee3fb4a1a0133cdef54db98ede2
   productId: number;
 }
 
@@ -32,7 +36,11 @@ export async function addCartItem({ productId }: AddCartItemArgs) {
   if (!response.ok) throw new Error(`${response.status}`);
 }
 
+<<<<<<< HEAD
 interface RemoveCartItemArgs {
+=======
+export interface RemoveCartItemArgs {
+>>>>>>> 9560a8eead974ee3fb4a1a0133cdef54db98ede2
   cartItemId: number;
 }
 
@@ -44,3 +52,21 @@ export async function removeCartItem({ cartItemId }: RemoveCartItemArgs) {
 
   if (!response.ok) throw new Error(`${response.status}`);
 }
+<<<<<<< HEAD
+=======
+
+export interface UpdateCartItemArgs {
+  cartItemId: number;
+  quantity: number;
+}
+
+export async function updateCartItem({ cartItemId, quantity }: UpdateCartItemArgs) {
+  const response = await fetch(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, {
+    method: 'PATCH',
+    headers: HEADERS,
+    body: JSON.stringify({ quantity }),
+  });
+
+  if (!response.ok) throw new Error(`${response.status}`);
+}
+>>>>>>> 9560a8eead974ee3fb4a1a0133cdef54db98ede2

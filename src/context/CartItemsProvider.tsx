@@ -1,27 +1,17 @@
-import { SetStateAction, createContext, useEffect, useState } from 'react';
+import { createContext } from 'react';
 import { CartItem } from '../types';
-import useCartItems from '@_hooks/useCartItems';
+import useGetCartItems from '@_hooks/useGetCartItems';
 
 interface CartItemsContextValue {
   cartItems: CartItem[];
-  setRefresh: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export const CartItemsContext = createContext<CartItemsContextValue>({
   cartItems: [],
-  setRefresh: () => {},
 });
 
 export const CartItemsProvider = ({ children }: { children: React.ReactNode }) => {
-  const { cartItems, getCartItems } = useCartItems();
-  const [refresh, setRefresh] = useState<boolean>(true);
+  const { cartItems } = useGetCartItems();
 
-  useEffect(() => {
-    if (refresh) {
-      getCartItems();
-      setRefresh(false);
-    }
-  }, [refresh]);
-
-  return <CartItemsContext.Provider value={{ cartItems, setRefresh }}>{children}</CartItemsContext.Provider>;
+  return <CartItemsContext.Provider value={{ cartItems }}>{children}</CartItemsContext.Provider>;
 };

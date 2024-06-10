@@ -1,9 +1,11 @@
 import * as S from './style';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CartItemsContext } from '../../../context/CartItemsProvider';
 import Logo from '@_assets/images/logo.png';
 import CartIcon from '@_assets/images/cartIcon.png';
+import { PAGE_INFORMATION } from '@_constants/page';
+import CartModal from '@_components/cart/CartModal';
 
 export default function Header() {
   return (
@@ -17,7 +19,7 @@ export default function Header() {
 function HomeButton() {
   const navigate = useNavigate();
   const moveToHome = () => {
-    navigate(0);
+    navigate(PAGE_INFORMATION.main.path);
   };
 
   return (
@@ -28,17 +30,27 @@ function HomeButton() {
 }
 
 function CartButton() {
-  const navigate = useNavigate();
-  const moveToCartPage = () => {
-    navigate(0);
+  const [modalOpened, setModalOpened] = useState(false);
+
+  const handleModalOpen = () => {
+    setModalOpened(true);
+    document.body.setAttribute('style', 'overflow: hidden');
+  };
+
+  const handleModalClose = () => {
+    setModalOpened(false);
+    document.body.setAttribute('style', 'overflow: auto');
   };
 
   const { cartItems } = useContext(CartItemsContext) || { cartItems: [] };
 
   return (
-    <S.Button onClick={moveToCartPage} type='button'>
-      <S.CartIcon src={CartIcon} alt='장바구니 버튼' />
-      <S.CartItemQuantity>{cartItems.length}</S.CartItemQuantity>
-    </S.Button>
+    <>
+      <S.Button onClick={handleModalOpen} type='button'>
+        <S.CartIcon src={CartIcon} alt='장바구니 버튼' />
+        <S.CartItemQuantity>{cartItems.length}</S.CartItemQuantity>
+      </S.Button>
+      <CartModal isOpened={modalOpened} modalClose={handleModalClose} />
+    </>
   );
 }

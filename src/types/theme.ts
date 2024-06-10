@@ -31,6 +31,11 @@ export interface FontSize {
   normal: CSSProperties['fontSize'];
 
   cartIcon: CSSProperties['fontSize'];
+  cartTitle: CSSProperties['fontSize'];
+  cartItemName: CSSProperties['fontSize'];
+
+  paymentDetailTitle: CSSProperties['fontSize'];
+  paymentDetailAmount: CSSProperties['fontSize'];
 }
 
 export interface FontWeight {

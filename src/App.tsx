@@ -26,7 +26,7 @@ const FilterContainer = styled.div`
 `;
 
 function App() {
-  const { products, setCategory, setSort, fetchNextPage, error, loading } = useProducts();
+  const { products, isLoading, error, setCategory, setSort, fetchNextPage } = useProducts();
 
   const onCategorySelect = (value: string) => {
     setCategory(value);
@@ -55,7 +55,7 @@ function App() {
             />
           </FilterContainer>
 
-          <ProductList loading={loading} error={error}>
+          <ProductList loading={isLoading} error={error}>
             {products.map((product, idx) => {
               const isLastProduct = idx + 1 === products.length;
               return isLastProduct ? (

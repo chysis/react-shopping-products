@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 
-export const Button = styled.button<{ isPushed: boolean }>`
+export const AddButton = styled.button`
   position: absolute;
   bottom: 8px;
   right: 8px;
 
   height: 24px;
 
-  background-color: ${({ isPushed, theme }) => (isPushed ? theme.colors.btnActiveBgColor : theme.colors.btnBgColor)};
-  color: ${({ isPushed, theme }) => (isPushed ? theme.colors.black : theme.colors.white)};
+  background-color: ${({ theme }) => theme.colors.btnBgColor};
+  color: ${({ theme }) => theme.colors.white};
   padding: 4px 8px;
   border-radius: 4px;
 
@@ -20,4 +20,18 @@ export const Button = styled.button<{ isPushed: boolean }>`
   align-items: center;
   justify-content: center;
   gap: 6px;
+`;
+
+export const QuantityController = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+
+  width: 80px;
+
+  gap: 4px;
 `;

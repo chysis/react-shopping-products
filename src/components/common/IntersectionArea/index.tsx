@@ -10,7 +10,7 @@ export default function IntersectionArea({
   threshold,
   children,
 }: React.PropsWithChildren<InterSectionArea>) {
-  const areaRef = useRef(null);
+  const areaRef = useRef<HTMLDivElement | null>(null);
   const [hasImpressed, setHasImpressed] = useState<boolean>(false);
 
   useEffect(() => {
@@ -30,16 +30,18 @@ export default function IntersectionArea({
       { threshold }
     );
 
-    if (areaRef.current) {
-      observer.observe(areaRef.current);
+    const currentElement = areaRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
     }
 
     return () => {
-      if (areaRef.current) {
-        observer.unobserve(areaRef.current);
+      if (currentElement) {
+        observer.unobserve(currentElement);
       }
+      observer.disconnect();
     };
-  }, [onImpression, threshold]);
+  }, [hasImpressed, onImpression, threshold]);
 
   return <div ref={areaRef}>{children}</div>;
 }

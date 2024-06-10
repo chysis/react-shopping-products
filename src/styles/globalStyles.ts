@@ -139,6 +139,14 @@ const globalStyles = () => css`
     border-collapse: collapse;
     border-spacing: 0;
   }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    overflow: auto;
+  }
 `;
 
 export default globalStyles;
