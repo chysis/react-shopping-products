@@ -11,7 +11,7 @@ describe('useProducts', () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
         expect(result.current.error).toBeNull();
       });
     });
@@ -19,7 +19,7 @@ describe('useProducts', () => {
     it('상품 목록 조회 중 로딩 상태는 true가 된다.', () => {
       const { result } = renderHook(() => useProducts());
 
-      expect(result.current.loading).toBe(true);
+      expect(result.current.isLoading).toBe(true);
     });
 
     it('상품 목록 조회 중 에러가 발생하면 로딩 상태는 false, 에러 상태는 true가 된다.', async () => {
@@ -33,7 +33,7 @@ describe('useProducts', () => {
 
       await waitFor(() => {
         expect(result.current.products).toEqual([]);
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
         expect(result.current.error).toBeTruthy();
       });
     });
@@ -103,17 +103,17 @@ describe('useProducts', () => {
       const { result } = renderHook(() => useProducts());
 
       await waitFor(() => {
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
       });
 
       act(() => {
         result.current.fetchNextPage();
       });
 
-      expect(result.current.loading).toBe(true);
+      expect(result.current.isLoading).toBe(true);
 
       await waitFor(() => {
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
       });
     });
   });
