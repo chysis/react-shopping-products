@@ -65,8 +65,11 @@ export const QuantityController = styled.div`
   gap: 4px;
 `;
 
-export const DeleteButtonBox = styled.div`
+export const DeleteButton = styled.button`
   position: absolute;
   top: 0;
   right: 0;
+
+  width: 40px;
+  height: 24px;
 `;

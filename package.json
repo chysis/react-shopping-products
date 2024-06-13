@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.40.1",
+    "@tanstack/react-query-devtools": "^5.44.0",
     "fe-custom-modal": "^0.0.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

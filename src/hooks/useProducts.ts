@@ -10,6 +10,7 @@ export type SortType = 'desc' | 'asc';
 
 interface UseProductsResult {
   products: Product[];
+  refetch: () => void;
   isLoading: boolean;
   error: Error | null;
   page: number;
@@ -39,7 +40,7 @@ export default function useProducts(): UseProductsResult {
     });
   };
 
-  const { data, error, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery<FetchProductsResponse>({
+  const { data, refetch, error, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery<FetchProductsResponse>({
     queryKey: [QUERY_KEYS.products, category, sort],
     queryFn: ({ pageParam }) => getProducts(pageParam as number),
     initialPageParam: START_PAGE_NUMBER,
@@ -52,6 +53,18 @@ export default function useProducts(): UseProductsResult {
         return lastPage.number + 1;
       }
     },
+    networkMode: 'always',
+    retry(failureCount, error) {
+      const errorStatus = Number(error.message);
+      if (errorStatus >= 400 && errorStatus < 500) {
+        return false;
+      }
+
+      if (errorStatus >= 500 && errorStatus < 600) {
+        return failureCount < 3;
+      }
+      return false;
+    },
   });
 
   const products = data?.pages.flatMap((page) => page.content) || [];
@@ -60,6 +73,7 @@ export default function useProducts(): UseProductsResult {
 
   return {
     products,
+    refetch,
     isLoading,
     error,
     page,

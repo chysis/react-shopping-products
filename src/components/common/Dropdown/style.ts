@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export type Size = 'default' | 'full';
+
 const DROPDOWN_SIZE = {
   default: '125px',
   full: '100%',

@@ -1,11 +1,11 @@
 import * as S from './style';
 import { useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
-import { CartItemsContext } from '../../../context/CartItemsProvider';
+import { useState } from 'react';
 import Logo from '@_assets/images/logo.png';
 import CartIcon from '@_assets/images/cartIcon.png';
 import { PAGE_INFORMATION } from '@_constants/page';
 import CartModal from '@_components/cart/CartModal';
+import useGetCartItems from '@_hooks/useGetCartItems';
 
 export default function Header() {
   return (
@@ -30,6 +30,7 @@ function HomeButton() {
 }
 
 function CartButton() {
+  const { cartItems } = useGetCartItems();
   const [modalOpened, setModalOpened] = useState(false);
 
   const handleModalOpen = () => {
@@ -41,8 +42,6 @@ function CartButton() {
     setModalOpened(false);
     document.body.setAttribute('style', 'overflow: auto');
   };
-
-  const { cartItems } = useContext(CartItemsContext) || { cartItems: [] };
 
   return (
     <>

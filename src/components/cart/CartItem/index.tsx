@@ -1,11 +1,10 @@
-import QuantityButton from '@_components/common/Buttons/QuantityButton';
 import Divider from '@_components/common/Divider';
-import Button from '@_components/common/Buttons';
 
 import { CartItem as CartItemType } from '@_types/cartItem';
 
 import * as S from './style';
 import { useMutateCartItems } from '@_hooks/useMutateCartItems';
+import QuantityButton from '@_components/common/QuantityButton';
 
 interface CartItemProps {
   cartItemInfo: CartItemType;
@@ -38,7 +37,7 @@ function CartItem({ cartItemInfo }: CartItemProps) {
     <S.Wrapper>
       <Divider />
       <S.Container>
-        <S.Image src={cartItemInfo.product.imageUrl} />
+        <S.Image src={cartItemInfo.product.imageUrl} alt={cartItemInfo.product.name} />
         <S.Information>
           <S.NameAndPrice>
             <S.Name>{cartItemInfo.product.name}</S.Name>
@@ -52,11 +51,7 @@ function CartItem({ cartItemInfo }: CartItemProps) {
             <div>{cartItemInfo.quantity}</div>
             <QuantityButton type='plus' onClick={handleIncreaseQuantity} />
           </S.QuantityController>
-          <S.DeleteButtonBox>
-            <Button width='40px' height='24px' onClick={handleDeleteItem}>
-              삭제
-            </Button>
-          </S.DeleteButtonBox>
+          <S.DeleteButton onClick={handleDeleteItem}>삭제</S.DeleteButton>
         </S.Information>
       </S.Container>
     </S.Wrapper>

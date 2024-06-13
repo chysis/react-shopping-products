@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { CATEGORY, SORT } from '@_constants/filterOptions';
 import { PAGE_INFORMATION } from '@_constants/page';
 
-import { CartItemsProvider } from '@_context/CartItemsProvider';
 import useProducts, { SortType } from '@_hooks/useProducts';
 import Layout from '@_components/layout';
 import Header from '@_components/product/Header';
@@ -26,7 +25,7 @@ const FilterContainer = styled.div`
 `;
 
 function App() {
-  const { products, isLoading, error, setCategory, setSort, fetchNextPage } = useProducts();
+  const { products, refetch, isLoading, error, setCategory, setSort, fetchNextPage } = useProducts();
 
   const onCategorySelect = (value: string) => {
     setCategory(value);
@@ -37,38 +36,36 @@ function App() {
 
   return (
     <Wrapper>
-      <CartItemsProvider>
-        <Layout header={<Header />}>
-          <Title content={PAGE_INFORMATION.main.title} />
-          <FilterContainer>
-            <Dropdown
-              size='default'
-              defaultContent={CATEGORY.defaultContent}
-              options={CATEGORY.options}
-              onSelect={onCategorySelect}
-            />
-            <Dropdown
-              size='default'
-              defaultContent={SORT.defaultContent}
-              options={SORT.options}
-              onSelect={onSortSelect}
-            />
-          </FilterContainer>
+      <Layout header={<Header />}>
+        <Title content={PAGE_INFORMATION.main.title} />
+        <FilterContainer>
+          <Dropdown
+            size='default'
+            defaultContent={CATEGORY.defaultContent}
+            options={CATEGORY.options}
+            onSelect={onCategorySelect}
+          />
+          <Dropdown
+            size='default'
+            defaultContent={SORT.defaultContent}
+            options={SORT.options}
+            onSelect={onSortSelect}
+          />
+        </FilterContainer>
 
-          <ProductList loading={isLoading} error={error}>
-            {products.map((product, idx) => {
-              const isLastProduct = idx + 1 === products.length;
-              return isLastProduct ? (
-                <IntersectionArea onImpression={fetchNextPage} key={`${product.id}_${idx}`}>
-                  <ProductItem product={product} />
-                </IntersectionArea>
-              ) : (
-                <ProductItem product={product} key={`${product.id}_${idx}`} />
-              );
-            })}
-          </ProductList>
-        </Layout>
-      </CartItemsProvider>
+        <ProductList loading={isLoading} error={error} refetch={refetch}>
+          {products.map((product, idx) => {
+            const isLastProduct = idx + 1 === products.length;
+            return isLastProduct ? (
+              <IntersectionArea onImpression={fetchNextPage} key={`${product.id}_${idx}`}>
+                <ProductItem product={product} />
+              </IntersectionArea>
+            ) : (
+              <ProductItem product={product} key={`${product.id}_${idx}`} />
+            );
+          })}
+        </ProductList>
+      </Layout>
     </Wrapper>
   );
 }

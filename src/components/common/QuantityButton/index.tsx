@@ -1,6 +1,6 @@
 import { HiOutlineMinus, HiOutlinePlus } from 'react-icons/hi';
 import { MdDelete } from 'react-icons/md';
-import Button from '..';
+import * as S from './style';
 
 export type ButtonType = 'plus' | 'minus' | 'canDelete';
 
@@ -16,11 +16,7 @@ const QuantityButton = ({ type, onClick }: QuantityProps) => {
     canDelete: <MdDelete size={16} />,
   };
 
-  return (
-    <Button width='24px' fontSize='24px' borderRadius='8px' onClick={onClick}>
-      {buttonMap[type]}
-    </Button>
-  );
+  return <S.Button onClick={onClick}>{buttonMap[type]}</S.Button>;
 };
 
 export default QuantityButton;

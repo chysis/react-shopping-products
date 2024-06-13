@@ -1,29 +1,42 @@
-import { CART_ITEMS_ENDPOINT } from '@_api/endpoints';
-import { fetchData } from '@_api/fetch';
+import { FetchCartItemsResponse, fetchCartItems } from '@_api/cart';
 import { QUERY_KEYS } from '@_constants/queryKeys';
 import { CartItem } from '@_types/cartItem';
-import { useQuery } from '@tanstack/react-query';
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
-interface FetchCartItemsResponse {
-  last: boolean;
-  number: number;
-  content: CartItem[];
+interface UseGetCartItemsResult {
+  cartItems: CartItem[];
+  error: Error | null;
+  isLoading: boolean;
+  isFetching: boolean;
+  refetch: () => void;
 }
 
-const fetchCartItems = async (): Promise<FetchCartItemsResponse> => {
-  return await fetchData<FetchCartItemsResponse>(CART_ITEMS_ENDPOINT, {
-    size: 100,
-  });
-};
+interface UseGetCartItemsOptions extends Omit<UseQueryOptions<FetchCartItemsResponse, Error>, 'queryKey' | 'queryFn'> {}
 
-export default function useGetCartItems() {
-  const { data, status } = useQuery<FetchCartItemsResponse>({
+interface UseGetCartItemsProps {
+  options?: UseGetCartItemsOptions;
+}
+
+export default function useGetCartItems({ options }: UseGetCartItemsProps = {}): UseGetCartItemsResult {
+  const { data, error, isLoading, isFetching, refetch } = useQuery<FetchCartItemsResponse>({
     queryKey: [QUERY_KEYS.cart],
     queryFn: () => fetchCartItems(),
     networkMode: 'always',
+    retry(failureCount, error) {
+      const errorStatus = Number(error.message);
+      if (errorStatus >= 400 && errorStatus < 500) {
+        return false;
+      }
+
+      if (errorStatus >= 500 && errorStatus < 600) {
+        return failureCount < 3;
+      }
+      return false;
+    },
+    ...options,
   });
 
   const cartItems = (data && data.content) || [];
 
-  return { cartItems, status };
+  return { cartItems, error, isLoading, isFetching, refetch };
 }

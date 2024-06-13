@@ -20,6 +20,10 @@ export const ToastContainer = styled.div<ToastContainerProps>`
   top: 64px;
   left: 50%;
 
+  width: 430px;
+  text-align: center;
+  text-overflow: ellipsis;
+
   transform: translateX(-50%);
   background-color: ${({ theme }) => theme.colors.errorFallback};
   color: ${({ theme }) => theme.colors.black};
@@ -27,6 +31,5 @@ export const ToastContainer = styled.div<ToastContainerProps>`
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  animation: ${fadeOut} ${({ duration }) => `${duration / 1000}s`} ease-in-out
-    forwards;
+  animation: ${fadeOut} ${({ duration }) => `${duration / 1000}s`} ease-in-out forwards;
 `;

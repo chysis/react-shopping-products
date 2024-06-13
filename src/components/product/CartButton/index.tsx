@@ -1,16 +1,15 @@
-import { useContext } from 'react';
 import { AddCartIcon } from './Icons';
 import * as S from './style';
-import { CartItemsContext } from '@_context/CartItemsProvider';
-import QuantityButton from '@_components/common/Buttons/QuantityButton';
 import { useMutateCartItems } from '@_hooks/useMutateCartItems';
+import useGetCartItems from '@_hooks/useGetCartItems';
+import QuantityButton from '@_components/common/QuantityButton';
 
 interface CartButtonProps {
   productId: number;
 }
 
 export default function CartButton({ productId }: CartButtonProps) {
-  const { cartItems } = useContext(CartItemsContext) || { cartItems: [] };
+  const { cartItems } = useGetCartItems();
   const { addItemToCart, removeItemFromCart, updateCartItemQuantity } = useMutateCartItems();
 
   const targetCartItem = cartItems.find((cartItem) => cartItem.product.id === productId);
