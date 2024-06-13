@@ -44,8 +44,14 @@ export const ErrorMessage = styled.div`
 `;
 
 export const RefetchButton = styled.button`
-  width: 200px;
-  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  width: 200px;
+  height: 40px;
+
+  border: 1px solid ${({ theme }) => theme.colors.gray};
+  border-radius: 8px;
   font-size: 15px;
 `;
